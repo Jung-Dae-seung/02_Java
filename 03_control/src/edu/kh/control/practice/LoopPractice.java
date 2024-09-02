@@ -204,7 +204,7 @@ public class LoopPractice {
 		// **
 		// ***
 		// **
-		// *
+		// *.
 		
 		System.out.print("정수 입력 : ");
 		int num = sc.nextInt();
@@ -245,6 +245,76 @@ public class LoopPractice {
             }
 			System.out.println();
 		}
+		
+	}
+	
+	public void practice12() {
+		
+		// 다음과 같은 실행 예제를 구현하세요.
+		// *****
+		// *   *
+		// *   *
+		// *   *
+		// *****
+		
+		System.out.print("정수 입력 : ");
+		int num = sc.nextInt();
+		
+		for (int i = 0; i < num; i++) {
+			System.out.print('*');
+		}
+		
+		System.out.println();
+		
+		for(int i = 0; i <= num-3; i++) {
+			for(int j = 1; j <= num; j++) {
+				if(j == 1 || j == num) {
+					System.out.print("*");
+				} else {
+					System.out.print(" ");
+				}
+			}
+			System.out.println();
+		}
+		
+
+		for (int i = 0; i < num; i++) {
+			System.out.print('*');
+		}
+		
+	}
+	
+	public void practice13() {
+		
+		// 1부터 사용자에게 입력 받은 수까지 중에서
+		// 1) 2와 3의 배수를 모두 출력하고
+		// 2) 2와 3의 공배수의 개수를 출력하세요.
+		
+		// 자연수 하나를 입력하세요 : 15
+		// 2 3 4 6 8 9 10 12 14 15
+		// count : 2
+		
+		System.out.print("자연수 하나를 입력하세요 : ");
+		int num = sc.nextInt();
+		int count = 0;
+		String result = "";
+		
+		for(int i = 1; i <= num; i++) {
+			
+			if(i % 2 == 0 || i % 3 == 0) {
+				result += i + " ";
+				
+				if(i % 5 == 0) {
+					count++;
+				}
+				
+			}
+			
+			
+		}
+		
+		System.out.printf("%s\n", result);
+		System.out.printf("count : %d", count);
 		
 	}
 	
