@@ -22,7 +22,7 @@ public class PracticeRun {
 		
 		// service.practice7();
 		
-		// service.practice8();
+		service.practice8();
 		
 		// service.practice9();
 		
@@ -30,7 +30,7 @@ public class PracticeRun {
 		
 		// service.practice13();
 		
-		service.practice14();
+		// service.practice14();
 		
 	}
 	

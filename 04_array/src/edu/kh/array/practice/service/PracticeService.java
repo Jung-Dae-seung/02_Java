@@ -250,12 +250,12 @@ public class PracticeService {
 			
 		}
 		
-		int[] arr = new int[5];
+		int[] arr = new int[input];
 		int count = 0;
 		
-		for(int i = 0; i <= 4; i++) {
+		for(int i = 0; i < arr.length; i++) {
 			
-			if(i > 2) {
+			if(i > arr.length / 2) {
 				count--;
 				arr[i] = count;
 			} else {
@@ -263,28 +263,14 @@ public class PracticeService {
 				arr[i] = count;
 			}
 			
-			System.out.print(arr[i] + " ");
+			if(i != arr.length - 1) {
+				System.out.print(arr[i] + ", ");
+			} else {
+				System.out.print(arr[i]);
+			}
 			
 		}
 
-		/*
-		int[] arr = new int[input * 2 - 1];
-		int count = input;
-		
-		for(int i = 0; i < arr.length; i++) {
-			
-			if(i > input-1) {
-				arr[i] = count - 1;
-				count -= 1;
-			} else {
-				arr[i] = i + 1;
-			}
-			
-			System.out.print(arr[i] + " ");
-			
-		}
-		*/
-		
 	}
 	
 	public void practice9() {
@@ -472,7 +458,7 @@ public class PracticeService {
 		System.out.print("배열의 크기를 입력하세요 : ");
 		number = sc.nextInt();
 		
-		// nextInt는 가장 마지막 문자인 엔터를 제거하지 않는다
+		// nextInt() 호출후 버퍼에 남아있는 개행 문자를 제거 해야됨
 		// 1. nextLine()을 nextInt()이후에 추가
 		// 2. nextLine()으로 받아서 parseInt로 변경해서 사용
 		sc.nextLine();
@@ -497,7 +483,7 @@ public class PracticeService {
 				input = sc.nextInt();
 				sc.nextLine();
 				
-				// 기존에 입력한 배열 복사
+				// 기존 배열의 내용을 새로운 배열로 복사하고 크기를 늘림
 				String[] strCopy = Arrays.copyOf(strArr, strArr.length + input);
 				
 				for(int i = number; i < number + input; i++) {
@@ -507,16 +493,18 @@ public class PracticeService {
 					
 				}
 				
-				// 복사한 배열 내용을 초기 설정 배열에 초기화
+				// 복사한 배열을 기존 배열로 대체
 				strArr = strCopy;
 				
-				// 배열의 크기 누적진행
+				// 배열의 크기 갱신
 				number += input;
 				
-			}
-			
-			if(check.toUpperCase().equals("N")) {
+			} else if(check.toUpperCase().equals("N")) {
 				break;
+				
+			} else {
+				System.out.println("잘못 입력하셨습니다. 다시입력해주세요.");
+				
 			}
 				
 			
