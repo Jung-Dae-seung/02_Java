@@ -147,11 +147,13 @@ public class MemberService {
 		
 		if(loginMember == null) {
 			return "로그인후 이용하세요.";
+			// return; : 현재 메서드를 종료하고 함수를 호출한 쪽으로 되돌아 가는것
+			// return 값; : 현재 메서드를 종료하고 함수를 호출한 쪽으로 값을 가지고 되돌아 가는것
 			
 		} else {
 			return "이름: " + loginMember.getMemberName() + 
 					"\n아이디 : " + loginMember.getMemberId() + 
-					"\n나이 : " + loginMember.getMemberAge();
+					"\n나이 : " + loginMember.getMemberAge() + "세";
 			
 		}
 		
