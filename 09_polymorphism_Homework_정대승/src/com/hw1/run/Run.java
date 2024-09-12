@@ -15,6 +15,8 @@ public class Run {
 		Book[] book = new Book[3];
 		
 		book[0] = new Novel("해리 포터", "J.K.롤링", "판타지");
+		// 부모타입 참조변수 = 자식객체(업캐스팅)
+		
 		book[1] = new Textbook("자바 프로그래밍", "James Gosling", "컴퓨터 과학");
 		book[2] = new Poetry("우리들의 사랑시", "김소월", 30);
 		

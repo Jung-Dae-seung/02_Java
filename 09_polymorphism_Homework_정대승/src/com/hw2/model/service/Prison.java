@@ -18,7 +18,7 @@ public class Prison implements ManagementSystem{
 	@Override
 	public void addPerson(Person person) {
 		
-		if(prisonerCount != pri.length) {
+		if(prisonerCount < pri.length && person instanceof Prisoner) {
 			pri[prisonerCount] = (Prisoner) person;
 			System.out.println("수감자가 추가되었습니다 - " + pri[prisonerCount].getInfo());
 			
@@ -34,22 +34,24 @@ public class Prison implements ManagementSystem{
 	@Override
 	public void removePerson(String id) {
 		
-		for(int i = 0; i < pri.length; i++) {
+		for(int i = 0; i < prisonerCount; i++) {
 			
 			if(pri[i].getId().equals(id)) {
 				System.out.println("수감자가 삭제되었습니다 - " + pri[i].getInfo());
+				pri[i] = null;
 				
-				for (int j = i; j < pri.length - 1; j++) {
+				for (int j = i; j < prisonerCount - 1; j++) {
 		            pri[j] = pri[j + 1];
 		        }
 		        
-		        pri[pri.length - 1] = null;
-		        prisonerCount--;
+		        pri[--prisonerCount] = null; 
 		        
-		        break;
+		        return;
 			}
 			
 		}
+		
+		System.out.println("ID : " + id + "인 수감자를 찾을 수 없습니다.");
 		
 	}
 
@@ -58,11 +60,8 @@ public class Prison implements ManagementSystem{
 		
 		System.out.println("전체 수감자 명단 : ");
 		
-		for(int i = 0; i < pri.length; i++) {
-			
-			if(pri[i] != null) {
-				System.out.println( pri[i].getInfo() );
-			}
+		for(int i = 0; i < prisonerCount; i++) {
+			System.out.println( pri[i].getInfo() );
 			
 		}
 		
