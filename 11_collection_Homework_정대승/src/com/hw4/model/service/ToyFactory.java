@@ -386,8 +386,11 @@ public class ToyFactory {
 				ingreList.put(keyNum, ingreName);
 				System.out.println("재료가 성공적으로 덮어쓰기 되었습니다.");
 				
-			} else {
+			} else if(check == 'N') {
 				System.out.println("덮어쓰기가 취소되었습니다.");
+				return;
+			} else {
+				System.out.println("(Y/N)이외의 값이 들어와서 취소되었습니다.");
 				return;
 			}
 		
