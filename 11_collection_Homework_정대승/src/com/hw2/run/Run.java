@@ -12,12 +12,10 @@ public class Run {
 		Zoo zoo = new Zoo();
 		
 		// Tiger 객체 생성하여 zoo에 추가하기
-		Tiger tiger = new Tiger("호랑이");
-		zoo.addAnimal(tiger);
+		zoo.addAnimal(new Tiger("호랑이"));
 		
 		// Monkey 객체 생성하여 zoo 에 추가하기
-		Monkey monkey = new Monkey("원숭이");
-		zoo.addAnimal(monkey);
+		zoo.addAnimal(new Monkey("원숭이"));
 		
 		// 동물원 메뉴 출력하여 입력한 값 대로 코드 수행하기
 		zoo.displayMenu();

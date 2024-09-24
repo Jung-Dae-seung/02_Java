@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.InputMismatchException;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -16,8 +19,13 @@ public class BookService {
 	
 	private Set<Book> bookList = new HashSet<Book>();
 	
+	// 삭제/삽입이 빈번하게 일어나는 즐겨찾기 이므로
+	// LinkedList로 초기화
+	private List<Book> favoBook = new LinkedList<Book>();
+	
 	public BookService() {
 		
+		// 책 추가
 		bookList.add(new Book(1111, "세이노의 가르침", "세이노", 6480, "데이원"));
 		bookList.add(new Book(2222, "문과남자의 과학공부", "유시민", 15750, "돌베개"));
 		bookList.add(new Book(3333, "역행자", "자청", 17550, "웅진지식하우스"));
@@ -57,6 +65,21 @@ public class BookService {
 				case 3:
 					updateBook();
 					break;
+				case 4:
+					delBook();
+					break;
+				case 5:
+					addFavoBook();
+					break;
+				case 6:
+					delFavoBook();
+					break;
+				case 7:
+					srchFavoBook();
+					break;
+				case 8:
+					pickBook();
+					break;
 				default:
 					System.out.println("등록된 번호만 입력해주세요.");
 					break;
@@ -75,6 +98,9 @@ public class BookService {
 		
 	}
 
+	/**
+	 * 1. 도서 등록
+	 */
 	public void insertBook() {
 		
 		System.out.println("======도서 등록======");
@@ -102,6 +128,9 @@ public class BookService {
 		
 	}
 	
+	/**
+	 * 2. 도서 조회 책 번호 오름차순으로 정렬
+	 */
 	public void bookList() {
 		
 		List<Book> list = new ArrayList<>(bookList);
@@ -114,12 +143,33 @@ public class BookService {
 		
 	}
 	
+	/**
+	 * 3. 도서 수정 책이 있을경우 도서명, 저자, 가격, 출판사중
+	 *    선택하여 수정 진행하고 없을시 책이 없다고 출력후 종료
+	 */
 	public void updateBook() {
 		
-		System.out.println("======도서 수정======");
+		System.out.println("\n======도서 수정======");
 		System.out.print("수정할 도서 번호를 입력하세요 : ");
 		int bno = sc.nextInt();
 		sc.nextLine();
+		
+		// Book 객체 생성
+		Book updateBook = null;
+		
+		// bookList에서 해당 도서번호가 있을시
+		// updateBook에 값을 넣어줌
+		for(Book book : bookList) {
+			if(bno == book.getBno()) {
+				updateBook = book;
+			}
+		}
+		
+		// 해당 도서번호가 없을시 책이 없습니다 출력
+		if(updateBook == null) {
+			System.out.println("해당 도서번호의 책이 없습니다.");
+			return;
+		}
 		
 		System.out.println("1. 도서명");
 		System.out.println("2. 도서 저자");
@@ -129,21 +179,8 @@ public class BookService {
 		System.out.print("어떤 정보를 수정하시겠습니까? ");
 		int updateNum = sc.nextInt();
 		
-		Book updateBook = null;
-		
-		for(Book book : bookList) {
-			if(bno == book.getBno()) {
-				updateBook = book;
-			}
-		}
-		
-		if(updateBook == null) {
-			System.out.println("해당 도서번호의 책이 없습니다.");
-			return;
-		}
-		
-		
 		try {
+			// 입럭한 updateNum으로 해당 case 진행
 			switch (updateNum) {
 			case 1:
 				System.out.println("=====도서명 수정");
@@ -182,8 +219,162 @@ public class BookService {
 		
 		System.out.println("수정 완료");
 		
+	}
+	
+	/**
+	 * 4. 도서 삭제 해당되는 번호를 목록에서 조회해서
+	 *    목록에 있을시 삭제 여부 확인후 삭제 진행
+	 *    목록에 없을시 삭제 취소
+	 */
+	public void delBook() {
 		
+		System.out.println("\n=====도서 삭제=====");
+		
+		System.out.print("삭제할 도서의 번호를 입력하세오 : ");
+		int bno = sc.nextInt();
+		sc.nextLine();
+		
+		// 삭제하려는 book 데이터 넣기위한 변수
+		Book delBook = null;
+		
+		// 입력한 도서번호가 목록에 있을경우 delbook에 넣기
+		for(Book book : bookList) {
+			if(book.getBno() == bno) {
+				delBook = book;
+			}
+		}
+		
+		// delBook안에 아무것도 안들어 갔을경우 번호가 없음 출력
+		if(delBook == null) {
+			System.out.println("해당 번호가 없습니다");
+			
+		} else {
+			System.out.print("정말 삭제하시겠습니까?(Y/N) : ");
+			char check = sc.next().toUpperCase().charAt(0);
+			
+			if(check == 'N') {
+				System.out.println("삭제를 진행하지 않습니다.");
+				
+			} else if(check == 'Y') {
+				bookList.remove(delBook);
+			} 
+			
+		}
+			
+		System.out.println("삭제 끝");
 		
 	}
+
+	/**
+	 * 5. 즐겨찾기 추가
+	 */
+	public void addFavoBook() {
+		
+		System.out.println("\n=====즐겨 찾기 등록=====");
+		System.out.print("등록할 도서 번호 입력 : ");
+		int bno = sc.nextInt();
+		sc.nextLine();
+		
+		boolean check = false;
+		
+		// bookList를 반복자 Iterator book 변수에 초기화
+		Iterator<Book> book = bookList.iterator();
+
+		// bookList를 loop돌려서 입력한 도서 번호와 동일한 데이터가 있을시
+		// 즐겨찾기 favoBook변수에 해당 도서 내용 넣기
+		while(book.hasNext()) {
+			Book addBook = book.next();
+			
+			if(addBook.getBno() == bno) {
+				favoBook.add(addBook);
+				check = true;
+				break;
+			} 
+			
+		}
+		
+		if(check) {
+			System.out.println("등록성공");
+			
+		} else {
+			System.out.println("해당되는 도서 번호가 없습니다.");
+			
+		}
+		
+	}
+
+	/**
+	 * 6. 즐겨찾기 삭제 즐겨찾기 컬렉션에서 입력한 도서 번호를 삭제
+	 *    즐겨찾기가 비어있을 경우 등록된 도서가 없다고 출력
+	 *    
+	 */
+	public void delFavoBook() {
+		
+		System.out.println("\n=====즐겨 찾기 삭제=====");
+		boolean check = true;
+		
+		// favoBook 변수가 비어있을 경우
+		if(favoBook.isEmpty()) {
+			System.out.println("등록된 도서가 없습니다. 도서를 등록해주세요.");
+			
+		} else {
+			System.out.print("즐겨찾기 삭제할 도서 번호를 입력하세요 : ");
+			int bno = sc.nextInt();
+			sc.nextLine();
+			
+			// loop를 돌려 입력한 도서번호가 즐겨찾기 목록에 있을경우
+			// 해당 도서를 즐겨찾기에서 삭제
+			for(int i = 0; i < favoBook.size(); i++) {
+				if(favoBook.get(i).getBno() == bno) {
+					favoBook.remove(i);
+					check = false;
+					break;
+				}
+				
+			}
+			
+		}
+		
+		if(check) {
+			System.out.println("해당 도서 번호의 도서가 없습니다.");
+		}
+		
+	}
+
+	/**
+	 * 7. 즐겨 찾기 조회
+	 */
+	public void srchFavoBook() {
+		if(favoBook == null) {
+			System.out.println("등록된 도서가 없습니다. 도서를 등록해주세요.");
+			
+		} else {
+			for(int i = 0; i < favoBook.size(); i++) {
+				System.out.println(favoBook.get(i));
+				
+			}
+			
+		}
+
+	}
+
+	/**
+	 * 8. 추천도서 뽑기 등록된 도서들 중에서 랜덤으로 
+	 *    한개의 도서 제목을 가져오기
+	 */
+	public void pickBook() {
+		
+		List<Book> list = new ArrayList<Book>(bookList);
+		Random random = new Random();
+		
+		// 도서 목록의 개수만큼 랜덤을 돌리고
+		// 그중 한개의 값을 number변수에 대입
+		int number = random.nextInt(list.size());
+		
+		System.out.println(list.get(number).getBookName());
+		
+	}
+	
+	
 	
 }

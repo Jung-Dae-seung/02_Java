@@ -8,9 +8,11 @@ import com.hw2.model.dto.Animal;
 
 public class Zoo {
 
-	private List<Animal> animals = new ArrayList<Animal>();
+	private List<Animal> animals = null;
 	
-	public Zoo() {};
+	public Zoo() {
+		new ArrayList<Animal>();
+	}
 	
 	public void addAnimal(Animal animal) {
 		animals.add(animal);

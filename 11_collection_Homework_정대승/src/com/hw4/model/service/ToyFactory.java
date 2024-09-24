@@ -23,6 +23,9 @@ public class ToyFactory {
 	private Set<Toy> toyList = new HashSet<Toy>(); 
 	private Map<Integer, String> ingreList = new HashMap<Integer, String>();
 	
+	// 삭제할수 없는 재료들
+	private Set<String> prtIngre;
+	
 	// List.of() 방식 : (Java 9이상부터 사용가능) 가변인자를 받아 
 	//                   전달받은 요소로 구성된 List 생성 후 반환 
 	/* 
@@ -52,6 +55,9 @@ public class ToyFactory {
 		ingreList.put(2, "플라스틱");
 		ingreList.put(3, "유리");
 		ingreList.put(4, "고무");
+		
+		// 삭제할수 없는 재료들 세팅
+		prtIngre = new HashSet<String>(ingreList.values());
 		
 		// 장난감 추가(ingrePrd 가변함수 이용)
 		toyList.add(new Toy("마미롱레그", 8, 36000, "분홍색", 19950805, ingrePrd(1,4)));
@@ -260,7 +266,7 @@ public class ToyFactory {
 		// 장난감의 존재여부 확인 변수 
 		boolean check = true;
 		
-		// Set을 출력하기 위한 반복자 Iterator 사용
+		// Set의 내용들을 순서대로 가져오기 위한 반복자 Iterator 사용
 		Iterator<Toy> it = toyList.iterator();
 		
 		while (it.hasNext()) {
@@ -276,7 +282,8 @@ public class ToyFactory {
 			
 		}
 		
-		// 장난감이 있을경우 삭제되고 false로 바뀌었으니 아래 내용 진행
+		// 장난감이 있을경우 삭제되고 false로 바뀌었으니 
+		// 장난감이 없는경우 아래 내용 진행
 		if(check) {
 			System.out.println("해당되는 장난감이 없습니다.");
 			return;
@@ -423,9 +430,18 @@ public class ToyFactory {
 		
 		// 재료 목록중에 입력한 재료명이 있을 경우
 		if(ingreList.containsValue(ingreName)) {
-			// 해당 재료명의 데이터를 삭제
-			ingreList.values().remove(ingreName);
-			System.out.println("재료'" + ingreName + "'가 성공적으로 제거되었습니다.");
+			
+			// 기본재료에 입력된 재료명이 있을경우 삭제 불가
+			if(prtIngre.contains(ingreName)) {
+				System.out.println("기본 재료는 삭제할수 없습니다.");
+				return;
+				
+			} else {
+				// 해당 재료명의 데이터를 삭제
+				ingreList.values().remove(ingreName);
+				System.out.println("재료'" + ingreName + "'가 성공적으로 제거되었습니다.");
+				
+			}
 			
 		// 재료 목록중에 입력한 재료명이 없을 경우
 		} else {
