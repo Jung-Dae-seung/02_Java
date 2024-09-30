@@ -8,6 +8,7 @@ public class Member implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private String id;		// 회원id
 	private String pw;		// 회원password
 	private String name;	// 회원이름

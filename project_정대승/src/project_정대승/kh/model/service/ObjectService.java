@@ -109,7 +109,7 @@ public class ObjectService {
 
 			memList.add(new Member("hong123", "hg123", "홍길동", "사용자"));
 			memList.add(new Member("kim456", "km456", "김길동", "사용자"));
-			memList.add(new Member("admin123", "ad123", "관리자", "관리자"));
+			memList.add(new Member("admin", "ad123", "관리자", "관리자"));
 
 			for (int i = 0; i < memList.size(); i++) {
 				oos.writeObject(memList.get(i));

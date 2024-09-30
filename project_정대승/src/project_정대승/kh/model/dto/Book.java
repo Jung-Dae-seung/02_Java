@@ -8,6 +8,7 @@ public class Book implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private int bno;			// 책 번호
 	private String bookName;	// 책 이름
 	private String author;		// 책 저자
@@ -82,7 +83,7 @@ public class Book implements Serializable{
 				+ ", 책 저자 : " + author 
 				+ ", 책 가격 : " + price + "원 "
 				+ ", 책 출판사 : " + publisher 
-				+ ", 책 재고 : " + stock;
+				+ ", 책 재고 : " + stock + "권";
 	}
 	
 	
