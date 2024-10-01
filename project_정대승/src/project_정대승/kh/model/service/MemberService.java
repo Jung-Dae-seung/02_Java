@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import project_정대승.kh.model.dto.Book;
 import project_정대승.kh.model.dto.Member;
 
 public class MemberService extends ObjectService{
 	
 	private Scanner sc = new Scanner(System.in);
 	private List<Member> memberList = new ArrayList<Member>();
+	private List<Book> deBookList = new ArrayList<Book>();
 	
 	// 로그인 정보 확인을 위한 변수 선언
 	private Member loginMember = null;
@@ -19,8 +21,9 @@ public class MemberService extends ObjectService{
 		// 도서, 회원의 초기 데이터 등록
 		dataSet();
 		
-		// 등록된 초기 데이터 가져와서 List에 저장
+		// 등록된 초기 데이터(회원정보, 도서정보) 가져와서 List에 저장
 		memberList = memberInputData();
+		deBookList = bookInputData();
 	}
 	
 	/**
@@ -35,7 +38,6 @@ public class MemberService extends ObjectService{
 			do {
 				
 				if(loginMember == null) {
-				
 					System.out.println("=== 도서구매 프로그램 ===");
 					System.out.println("1. 회원가입");
 					System.out.println("2. 로그인");
@@ -49,7 +51,7 @@ public class MemberService extends ObjectService{
 					
 					switch(menuNum) {
 					case 1 : signUp(); break;
-					case 2 : loginMember(); break;
+					case 2 : login(); break;
 					case 3 : allMember(); break;
 					case 4 : srchPassword(); break;
 					case 0 : System.out.println("프로그램 종료..."); break;
@@ -59,7 +61,7 @@ public class MemberService extends ObjectService{
 					
 				} else {
 					// 도서 메뉴 출력 메서드의 return값(int)을 받아서 값에 따라 조건 설정 
-					checkNum = new BookStoreService().displayMenu(loginMember);
+					checkNum = new BookStoreService().displayMenu(loginMember, deBookList);
 					
 					if(checkNum == 1) {
 						// 도서 메뉴 출력에서 로그아웃 진행시
@@ -106,7 +108,7 @@ public class MemberService extends ObjectService{
 		// 비밀번호와 비밀번호 확인의 일치 여부
 		if( memberPw.equals(memberPw2) ) {
 			// 일치시 회원가입 진행
-			memberList.add(new Member(memberId, memberPw, memberName, "사용자"));
+			memberList.add(new Member(memberId, memberPw, memberName, "사용자", null));
 			System.out.println("회원 가입 성공\n");
 			
 		} else {
@@ -121,7 +123,7 @@ public class MemberService extends ObjectService{
 	 * 2. 로그인
 	 *    등록된 회원으로 로그인 진행
 	 */
-	public void loginMember() {
+	public void login() {
 		
 		System.out.println("\n<로그인>");
 		
@@ -153,11 +155,11 @@ public class MemberService extends ObjectService{
 		// 4) 로그인 성공/실패 여부에 따라 결과 값 반환
 		if(loginMember == null) {
 			// 로그인 실패
-			System.out.println("아이디 또는 비밀번호가 일치하지 않습니다.");
+			System.out.println("아이디 또는 비밀번호가 일치하지 않습니다.\n");
 			
 		} else {	
 			// 로그인 성공
-			System.out.println(loginMember.getName() + "님 환영합니다!");
+			System.out.println(loginMember.getName() + "님 환영합니다!\n");
 			
 		}
 		

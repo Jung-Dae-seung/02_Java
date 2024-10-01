@@ -12,12 +12,11 @@ import project_정대승.kh.model.dto.Book;
 import project_정대승.kh.model.dto.Member;
 
 public class ObjectService {
-
+	
 	public void dataSet() {
-
 		bookOutputData();
 		memberOutputData();
-
+		
 	}
 
 	public void bookOutputData() {
@@ -42,7 +41,7 @@ public class ObjectService {
 			}
 
 		} catch (Exception e) {
-			System.out.println("모든 도서 정보 출력 완료");
+			System.out.print("");
 
 		} finally {
 
@@ -75,7 +74,7 @@ public class ObjectService {
 			}
 
 		} catch (Exception e) {
-			System.out.println("모든 도서 정보 읽기 완료\n");
+			System.out.print("");
 
 		} finally {
 			try {
@@ -107,9 +106,9 @@ public class ObjectService {
 			fos = new FileOutputStream("src/project_정대승/kh/model/Member.dat");
 			oos = new ObjectOutputStream(fos);
 
-			memList.add(new Member("hong123", "hg123", "홍길동", "사용자"));
-			memList.add(new Member("kim456", "km456", "김길동", "사용자"));
-			memList.add(new Member("admin", "ad123", "관리자", "관리자"));
+			memList.add(new Member("hong123", "hg123", "홍길동", "사용자", null));
+			memList.add(new Member("kim456", "km456", "김길동", "사용자", null));
+			memList.add(new Member("admin", "ad123", "관리자", "관리자", null));
 
 			for (int i = 0; i < memList.size(); i++) {
 				oos.writeObject(memList.get(i));
@@ -128,7 +127,7 @@ public class ObjectService {
 				}
 
 			} catch (Exception e) {
-				System.out.println("모든 회원 정보 출력 완료");
+				System.out.print("");
 
 			}
 
@@ -168,7 +167,7 @@ public class ObjectService {
 			}
 
 		} catch (Exception e) {
-				System.out.println("모든 회원 정보 읽기 완료\n");
+				System.out.print("");
 
 		} finally {
 			try {

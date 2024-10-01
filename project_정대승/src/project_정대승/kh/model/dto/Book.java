@@ -76,6 +76,10 @@ public class Book implements Serializable{
 		this.stock = stock;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	@Override
 	public String toString() {
 		return "책 번호 : " + bno + ", "
@@ -84,6 +88,16 @@ public class Book implements Serializable{
 				+ ", 책 가격 : " + price + "원 "
 				+ ", 책 출판사 : " + publisher 
 				+ ", 책 재고 : " + stock + "권";
+	}
+	
+	public String userBookList() {
+		return "책 번호 : " + bno + ", "
+				+ "책 이름 : " + bookName 
+				+ ", 책 저자 : " + author 
+				+ ", 책 가격 : " + price + "원 "
+				+ ", 책 출판사 : " + publisher 
+				+ ", 책 재고 : " + stock + "권"
+				+ ", 총합 : " + price * stock + "원";
 	}
 	
 	

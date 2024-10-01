@@ -13,17 +13,10 @@ public class BookStoreService extends ObjectService{
 	private List<Book> bookList = new ArrayList<Book>();
 	private List<Book> userBook = new ArrayList<Book>();
 	
+	
 	// 로그인한 회원 정보
 	private Member loginMember = null;
 	
-	// 기본 메서드
-	public BookStoreService() {
-		
-		// 등록된 초기 데이터 가져와서 저장
-		bookList = bookInputData();
-		
-	}
-
 	
 	/**
 	 * 메뉴 출력 
@@ -31,11 +24,15 @@ public class BookStoreService extends ObjectService{
 	 * @param member
 	 * @return
 	 */
-	public int displayMenu(Member member) {
+	public int displayMenu(Member member, List<Book> deBookList) {
 		
 		// MemberService에서 사용할 int 변수 초기화
 		int checkNum = 0;
 		
+		// 기록된 도서 목록들 가져와서 bookList 변수에 넣어
+		bookList = deBookList;
+		
+		// 로그인한 회원 정보를 loginMember 변수에 넣기
 		loginMember = member;
 		
 		try {
@@ -88,6 +85,7 @@ public class BookStoreService extends ObjectService{
 					
 				// 로그인한 객체의 이름이 관리자가 아닐경우
 				} else {
+					
 					System.out.println("===도서 목록 프로그램===");
 					System.out.println("1. 도서 구매");
 					System.out.println("2. 도서 조회");
@@ -262,9 +260,11 @@ public class BookStoreService extends ObjectService{
 					break;
 				case 0:
 					break;
+					
 				default:
 					System.out.println("등록된 번호만 입력해주세요.\n");
 					break;
+					
 				}
 				
 			} catch (Exception e) {
@@ -386,14 +386,21 @@ public class BookStoreService extends ObjectService{
 					    if(userBook.get(i).getBno() == buyBook.getBno()) {
 					    	// 도서 구매 수량 업데이트
 					        userBook.get(i).setStock(userBook.get(i).getStock() + count);  
+					        
+					        // 로그인한 회원에게 구매한 도서 목록 데이터를 넣어준다
+					        loginMember.setUserBook(userBook);
 					        found = true;  
 					        break;
+					        
 					    }
 					}
 
 					// 도서를 찾지 못했다면 새로 추가
 					if (!found) {
 					    userBook.add(new Book(buyBook.getBno(), buyBook.getBookName(), buyBook.getAuthor(), buyBook.getPrice(), buyBook.getPublisher(), count));
+					    
+					    // 로그인한 회원에게 구매한 도서 목록 데이터를 넣어준다
+					    loginMember.setUserBook(userBook);
 					}
 					
 					System.out.println("도서 구매 요청이 완료되었습니다.\n");
@@ -413,8 +420,9 @@ public class BookStoreService extends ObjectService{
 		
 		System.out.println("\n<" + loginMember.getName() + " 회원의 도서 구매 목록>" );
 		
-		for(Book temp : userBook) {
-			System.out.println(temp);
+		// 로그인한 회원의 구매한 도서 목록들 조회
+		for(Book temp : loginMember.getUserBook()) {
+			System.out.println(temp.userBookList());
 			
 		}
 		
@@ -430,20 +438,24 @@ public class BookStoreService extends ObjectService{
 		System.out.println("\n<" + loginMember.getName() + " 의 도서 구매 취소>");
 		System.out.println("구매한 도서 목록");
 		
-		for(Book temp : userBook) {
+		for(Book temp : loginMember.getUserBook()) {
 			System.out.println(temp);
 			
 		}
 		
+		// 도서 목록에서 사용할 변수
 		Book cancleBook = null;
 		
 		System.out.print("구매 취소할 도서 번호를 입력해주세요 : ");
 		int bno = sc.nextInt();
 		sc.nextLine();
 		
-		for(int i = 0; i < userBook.size(); i++) {
-			if(userBook.get(i).getBno() == bno) {
-				cancleBook = userBook.get(i);
+		// 로그인한 회원의 구매 도서 목록들을 순회를 돌아서
+		// 구매 취소할 도서 번호와 일치한게 있을시
+		// cancleBook 변수에 해당 도서 정보를 넣어줌
+		for(int i = 0; i < loginMember.getUserBook().size(); i++) {
+			if(loginMember.getUserBook().get(i).getBno() == bno) {
+				cancleBook = loginMember.getUserBook().get(i);
 			}
 			
 		}
@@ -456,7 +468,22 @@ public class BookStoreService extends ObjectService{
 			char check = sc.next().toUpperCase().charAt(0);
 			
 			if(check == 'Y') {
-				userBook.remove(cancleBook);
+				// 로그인한 회원에서 구매 취소할 도서 정보 삭제
+				loginMember.getUserBook().remove(cancleBook);
+				
+				// 도서 목록 순회를 돌아서 구매 취소 도서 번호와 일치한 번호가 있을시
+				for(int i = 0; i < bookList.size(); i++) {
+					Book srchBook = bookList.get(i);
+					
+					// 취소한 도서의 수량만큼 다시 더해준다.
+					if(srchBook.getBno() == cancleBook.getBno()) {
+						srchBook.setStock(srchBook.getStock() + cancleBook.getStock());
+						break;
+						
+					}
+					
+				}
+				
 				System.out.println("구매 취소가 확정되었습니다.\n");
 				
 			} else if(check == 'N') {

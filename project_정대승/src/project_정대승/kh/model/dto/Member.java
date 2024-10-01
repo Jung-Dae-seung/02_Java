@@ -1,6 +1,7 @@
 package project_정대승.kh.model.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Member implements Serializable{
 
@@ -9,19 +10,21 @@ public class Member implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String id;		// 회원id
-	private String pw;		// 회원password
-	private String name;	// 회원이름
-	private String type;	// 회원타입(관리자/유저)
+	private String id;				// 회원id
+	private String pw;				// 회원password
+	private String name;			// 회원이름
+	private String type;			// 회원타입(관리자/유저)
+	private List<Book> userBook;  	// 회원별 구매 도서 목록
 	
 	public Member() {}
 
-	public Member(String id, String pw, String name, String type) {
+	public Member(String id, String pw, String name, String type, List<Book> userBook) {
 		super();
 		this.id = id;
 		this.pw = pw;
 		this.name = name;
 		this.type = type;
+		this.userBook = userBook;
 	}
 
 	public String getId() {
@@ -54,6 +57,14 @@ public class Member implements Serializable{
 
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public List<Book> getUserBook() {
+		return userBook;
+	}
+
+	public void setUserBook(List<Book> userBook) {
+		this.userBook = userBook;
 	}
 
 	@Override
